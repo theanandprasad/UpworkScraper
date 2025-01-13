@@ -3,22 +3,33 @@
 
 ---
 
-Upwork Scraper is designed to automate the process of scraping job postings from **Upwork Best Matches**. It utilizes Selenium for web scraping and interacts with the Upwork website to extract job details, including job titles, descriptions, and proposals. The script then stores the extracted data in a SQLite database for easy access and retrieval.
+Upwork Scraper is designed to automate the process of scraping job postings from **Upwork**. It utilizes Selenium for web scraping and interacts with the Upwork website to extract job details, including job titles, descriptions, and proposals. The script then stores the extracted data in a SQLite database for easy access and retrieval.
 
-The script provides a streamlined solution for users who want to efficiently search for new job opportunities on Upwork without the hassle of manually browsing through job listings.
+The script provides a streamlined solution for users who want to efficiently search for specific job opportunities on Upwork without the hassle of manually browsing through job listings.
 
 ---
 ## Benefits
 
 - **Time Saving:** Automates the process of scraping job postings from Upwork, saving users time and effort.
 - **Efficient Job Search:** Facilitates a more efficient job search experience by automatically collecting and organizing job details.
-- **Customizable Interval:** Allows users to set the interval between scraping jobs according to their preferences.
+- **Customizable Search:** Allows users to search for specific jobs using keywords and various filters.
+- **Database Management:** Provides a user-friendly interface to view, search, and manage scraped jobs.
 
 ## Key Features
 
+- **Customizable Job Search:** Search for specific jobs with filters:
+  - Keywords search
+  - Payment type (Hourly/Fixed-price)
+  - Experience level (Entry/Intermediate/Expert)
+  - Sort by relevance or recency
 - **Automated Scraping:** Automatically scrolls through job postings on Upwork and extracts relevant job details.
 - **Database Integration:** Stores job details in a SQLite database for easy access and retrieval.
-
+- **Database Viewer:** Includes a separate utility to:
+  - View all scraped jobs
+  - Search jobs by title
+  - Look up specific jobs by ID
+  - View most recent jobs
+  - Clear database when needed
 
 ## Disclaimer
 
@@ -126,18 +137,46 @@ This is an [annoying bug](https://github.com/ultrafunkamsterdam/undetected-chrom
 
 ## Usage
 
+### Job Scraping
 Run Upwork Scraper with the following command:
 
 ```bash
 python upwork_best_matches_scraper.py
 ```
 
+The script will:
+1. Prompt you for search parameters:
+   - Keywords to search for
+   - Payment type preference
+   - Experience level
+   - Sort order
+2. Log into Upwork automatically
+3. Navigate to the search results
+4. Scrape and store job details in the database
+
+### Database Management
+View and manage scraped jobs using:
+
+```bash
+python view_database.py
+```
+
+The database viewer provides the following options:
+1. View all jobs in the database
+2. Search jobs by title keyword
+3. Get specific job by ID
+4. View most recent jobs
+5. Clear all jobs from database
+6. Exit
+
 ## Functionality
 Upwork Scraper performs the following tasks:
 
 1. Goes to the Upwork login page and logs you in.
-2. Scrapes job postings from Upwork Best Matches page.
-3. Parses job details and stores them in a SQLite database.
+2. Searches for jobs based on your specified criteria.
+3. Scrapes job postings from the search results.
+4. Parses job details and stores them in a SQLite database.
+5. Provides tools to view and manage the scraped data.
 
 ## Automate execution of script with a Cron job
 
@@ -193,6 +232,8 @@ env | grep "DISPLAY"
 - Capture job URLs ✅
 - Capture job timestamp ✅
 - Load more jobs when reaching the bottom of the page after scrolling down.
+- Add more search filters ✅
+- Create database viewer utility ✅
 
 
 ## Contributing
