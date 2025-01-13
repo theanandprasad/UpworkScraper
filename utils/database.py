@@ -30,3 +30,38 @@ def create_db(conn, cursor):
     ''')
     conn.commit()
 
+
+def get_all_jobs(cursor):
+    """Fetch all jobs from the database"""
+    cursor.execute('SELECT * FROM jobs')
+    return cursor.fetchall()
+
+
+def get_job_by_id(cursor, job_id):
+    """Fetch a specific job by its job_id"""
+    cursor.execute('SELECT * FROM jobs WHERE job_id = ?', (job_id,))
+    return cursor.fetchone()
+
+
+def search_jobs_by_title(cursor, keyword):
+    """Search jobs by title containing a keyword"""
+    cursor.execute('SELECT * FROM jobs WHERE job_title LIKE ?', (f'%{keyword}%',))
+    return cursor.fetchall()
+
+
+def get_recent_jobs(cursor, limit=10):
+    """Get the most recent jobs based on posted_date"""
+    cursor.execute('SELECT * FROM jobs ORDER BY posted_date DESC LIMIT ?', (limit,))
+    return cursor.fetchall()
+
+
+def clear_database(conn, cursor):
+    """Clear all records from the jobs table"""
+    try:
+        cursor.execute('DELETE FROM jobs')
+        conn.commit()
+        return True
+    except Exception as e:
+        print(f"Error clearing database: {e}")
+        return False
+

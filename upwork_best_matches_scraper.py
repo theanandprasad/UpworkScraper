@@ -59,6 +59,54 @@ def get_driver_with_retry(chrome_versions, max_attempts=3):
     return None
 
 
+def get_search_url():
+    """Get search parameters from user and construct the search URL"""
+    search_params = []
+    
+    # Get keyword
+    keyword = input("Enter search keyword(s): ")
+    if keyword:
+        search_params.append(f"q={keyword.replace(' ', '%20')}")
+    
+    # Get optional filters
+    print("\nSelect payment type:")
+    print("1. All types")
+    print("2. Hourly")
+    print("3. Fixed-price")
+    payment_choice = input("Enter choice (1-3), or press Enter to skip: ")
+    if payment_choice == "2":
+        search_params.append("payment_verified=1&hourly=1")
+    elif payment_choice == "3":
+        search_params.append("payment_verified=1&fixed=1")
+    
+    # Experience level
+    print("\nSelect experience level:")
+    print("1. Entry Level")
+    print("2. Intermediate")
+    print("3. Expert")
+    exp_choice = input("Enter choice (1-3), or press Enter to skip: ")
+    if exp_choice == "1":
+        search_params.append("contractor_tier=1")
+    elif exp_choice == "2":
+        search_params.append("contractor_tier=2")
+    elif exp_choice == "3":
+        search_params.append("contractor_tier=3")
+    
+    # Sort order
+    print("\nSort by:")
+    print("1. Recency")
+    print("2. Relevance")
+    sort_choice = input("Enter choice (1-2), default is Recency: ")
+    if sort_choice == "2":
+        search_params.append("sort=relevance")
+    else:
+        search_params.append("sort=recency")
+    
+    # Construct the URL
+    base_url = "https://www.upwork.com/nx/search/jobs?"
+    return base_url + "&".join(search_params)
+
+
 def main():
     """
     Main function for scraping job postings from Upwork.
@@ -138,9 +186,10 @@ def main():
             logger.info('Pausing 10 seconds for credentials verification')
             time.sleep(10)
 
-            # Go to target url
-            logger.info("Redirecting to Best Matches")
-            driver.get('https://www.upwork.com/nx/find-work/best-matches')
+            # Get search URL with user parameters
+            search_url = get_search_url()
+            logger.info(f"Searching with URL: {search_url}")
+            driver.get(search_url)
             time.sleep(10)
 
             # Scroll down using keyboard actions
